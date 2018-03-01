@@ -5,9 +5,18 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse
+from .models import Post
 
 def post_list(request):
-	return HttpResponse("<h1>List</h1")
+	queryset = Post.objects.all()
+	context = {
+		"object_list":queryset,
+		"title":"List"
+	}
+
+	return render(request, "index.html", context)
+	# return HttpResponse("<h1>List</h1")
+
 
 def post_create(request):
 	return HttpResponse("<h1>Create</h1")
