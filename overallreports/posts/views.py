@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render,get_object_or_404
 
 # Create your views here.
+from django.contrib import messages
 from .forms import PostForm
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Post
@@ -31,7 +32,10 @@ def post_create(request):
 		instance = form.save(commit=False)
 		instance.save()
 		# Success Message
+		messages.success(request, "Successfully Created.")
 		return HttpResponseRedirect(instance.get_absolute_url())
+	else:
+		messages.error(request, "Cannot Create !")
 	context = {
 		"form": form,
 	}
@@ -44,6 +48,7 @@ def post_update(request, id=None):
 		instance = form.save(commit=False)
 		instance.save()
 		# Success Message
+		messages.success(request,"Successfully Updated.")
 		return HttpResponseRedirect(instance.get_absolute_url())
 	context = {
 		"title": instance.title,
