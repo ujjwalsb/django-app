@@ -23,7 +23,7 @@ def post_list(request):
 		"object_list":queryset,
 		"title":"List"
 	}
-	return render(request, "index.html", context)
+	return render(request, "post_list.html", context)
 	# return HttpResponse("<h1>List</h1")
 
 def post_create(request):
@@ -34,8 +34,6 @@ def post_create(request):
 		# Success Message
 		messages.success(request, "Successfully Created.")
 		return HttpResponseRedirect(instance.get_absolute_url())
-	else:
-		messages.error(request, "Cannot Create !")
 	context = {
 		"form": form,
 	}
