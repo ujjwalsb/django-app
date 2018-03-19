@@ -23,7 +23,7 @@ class Post(models.Model):
 	width_field = models.IntegerField(default=0)
 	content = models.TextField()
 	updated = models.DateTimeField(auto_now=True, auto_now_add=False)
-	timestamp = models.DateTimeField(auto_now=False,auto_now_add=True)
+	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
 
 	def __unicode__(self):
@@ -33,7 +33,7 @@ class Post(models.Model):
 		return self.title
 
 	def get_absolute_url(self):
-		return reverse("posts:detail", kwargs={"slug":self.slug})
+		return reverse("posts:detail", kwargs={"id":self.id})
 
 	class Meta:
 		ordering = ["-timestamp", "-updated"]
