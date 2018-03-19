@@ -21,7 +21,7 @@ def post_list(request):
 	queryset = Post.objects.all()
 	context = {
 		"object_list":queryset,
-		"title":"My Posts"
+		"title":"Welcome to Overall Reports"
 	}
 	return render(request, "post_list.html", context)
 	# return HttpResponse("<h1>List</h1")
