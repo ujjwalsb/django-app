@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from django.shortcuts import render,get_object_or_404, redirect
 
 # Create your views here.
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
 from django.contrib import messages
 from .forms import PostForm
 from django.http import HttpResponse, HttpResponseRedirect
@@ -18,10 +20,21 @@ def post_detail(request, id=None):
 	return render(request, "post_detail.html", context)
 
 def post_list(request):
-	queryset = Post.objects.all()
+	queryset_list = Post.objects.all()
+	paginator = Paginator(queryset_list, 5) # Show 5 contacts per page
+	page_request_var = "page"
+	page = request.GET.get(page_request_var)
+	try:
+		queryset = paginator.page(page)
+	except PageNotAnInteger:
+		queryset = paginator.page(1)
+	except EmptyPage:
+		queryset = paginator.page(paginator.num_pages)
+
 	context = {
 		"object_list":queryset,
-		"title":"Welcome to Overall Reports"
+		"title":"Welcome to Overall Reports",
+		"page_request_var":page_request_var,
 	}
 	return render(request, "post_list.html", context)
 	# return HttpResponse("<h1>List</h1")
