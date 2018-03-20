@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% load urlify %}
 {% block head_title %}
 	{{ instance.title }} | {{ block.super }}
 {% endblock head_title %}
@@ -21,18 +22,18 @@ Facebook
 
 
 
-<a href="https://twitter.com/home?status={{ share_string }}%20{{ build_absolute_uri }}">
+<a href="https://twitter.com/home?status={{ instance.content | truncatechars:30 | urlify }}%20{{ build_absolute_uri }}">
 Twitter
 </a>
 
 
 <a href='https://plus.google.com/share?url={{ request.build_absolute_uri }}'>Google+</a>
 
-<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ share_string }}&source={{ request.build_absolute_uri }}">
+<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ instance.content | truncatechars:30 | urlify }}&source={{ request.build_absolute_uri }}">
 Linkedin
 </a>
 
-<a href="http://www.reddit.com/submit?url={{ request.build_absolute_uri }}&title={{ share_string }}">Reddit</a>
+<a href="http://www.reddit.com/submit?url={{ request.build_absolute_uri }}&title={{ instance.content | truncatechars:30 | urlify }}">Reddit</a>
 
 
 
