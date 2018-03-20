@@ -48,6 +48,7 @@ def post_create(request):
 	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
 		instance = form.save(commit=False)
+		instance.user = request.user
 		instance.save()
 		# Success Message
 		messages.success(request, "Successfully Created.")
