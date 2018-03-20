@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.contrib import messages
 from .forms import PostForm
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .models import Post
 
 def post_detail(request, id=None):
@@ -43,6 +43,8 @@ def post_list(request):
 	# return HttpResponse("<h1>List</h1")
 
 def post_create(request):
+	if not request.user.is_staff or not request.user.is_superuser:
+		raise Http404
 	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
 		instance = form.save(commit=False)
@@ -56,6 +58,8 @@ def post_create(request):
 	return render(request, "post_form.html", context)
 
 def post_update(request, id=None):
+	if not request.user.is_staff or not request.user.is_superuser:
+		raise Http404
 	instance = get_object_or_404(Post, id=id)
 	form = PostForm(request.POST or None, request.FILES or None, instance=instance)
 	if form.is_valid():
