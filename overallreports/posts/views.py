@@ -12,6 +12,7 @@ from .forms import PostForm
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .models import Post
 from django.utils import timezone
+from django.db.models import Q
 
 def post_detail(request, id=None):
 	instance = get_object_or_404(Post, id=id)
@@ -31,7 +32,17 @@ def post_list(request):
 	queryset_list = Post.objects.active()
 	if request.user.is_staff or request.user.is_superuser:
 		queryset_list = Post.objects.all()
-	paginator = Paginator(queryset_list, 5) # Show 5 contacts per page
+
+	query = request.GET.get("q")
+	if query:
+		queryset_list = queryset_list.filter(
+			Q(title__icontains = query) |
+			Q(content__icontains = query) |
+			Q(user__first_name__icontains = query) |
+			Q(user__last_name__icontains = query)
+			).distinct()
+
+	paginator = Paginator(queryset_list, 3) # Show 5 contacts per page
 	page_request_var = "page"
 	page = request.GET.get(page_request_var)
 	try:
